@@ -83,19 +83,20 @@ namespace TouchBaseServices.Controllers
                     Task task1 = Task.Factory.StartNew(() => sendNationalOTP(user.mobileNo, OTP));
                     Task task2 = null;
 
-                    if (emailId != null)
-                    {
-                        string email = string.IsNullOrEmpty(emailId) ? "securitycode@kaizeninfotech.com,milan.haldankar@kaizeninfotech.com" : "securitycode@kaizeninfotech.com,milan.haldankar@kaizeninfotech.com," + emailId.ToString().Trim();
-                        task2 = Task.Factory.StartNew(() => sendMail(email, OTP, memberName, user.mobileNo, clubName));
-                    }
-                    else
-                        task2 = Task.Factory.StartNew(() => sendMail("securitycode@kaizeninfotech.com,milan.haldankar@kaizeninfotech.com", OTP, memberName, user.mobileNo, clubName));
+                    //if (emailId != null)
+                    //{
+                    //string email = string.IsNullOrEmpty(emailId) ? "securitycode@kaizeninfotech.com,milan.haldankar@kaizeninfotech.com" : "securitycode@kaizeninfotech.com,milan.haldankar@kaizeninfotech.com,"+ emailId.Trim();
+                    string email = "securitycode@kaizeninfotech.com";
+                    task2 = Task.Factory.StartNew(() => sendMail(email, OTP, memberName, user.mobileNo, clubName));
+                    //}
+                    //else
+                    //  task2 = Task.Factory.StartNew(() => sendMail("securitycode@kaizeninfotech.com,milan.haldankar@kaizeninfotech.com", OTP, memberName, user.mobileNo, clubName));
 
                     Task.WaitAll(task1);
                 }
                 else
                 {
-                    int conCode=int.Parse(user.countryCode);
+                    int conCode = int.Parse(user.countryCode);
                     var countryCode = (from e in _DBTouchbase.country_master
                                        where e.country_master_id == conCode
                                        select e.country_code).FirstOrDefault();
@@ -105,7 +106,7 @@ namespace TouchBaseServices.Controllers
                     Task task2 = null;
                     if (emailId != null)
                     {
-                        string email = string.IsNullOrEmpty(emailId) ? "securitycode@kaizeninfotech.com" : "securitycode@kaizeninfotech.com," + emailId.ToString().Trim();
+                        string email = string.IsNullOrEmpty(emailId) ? "securitycode@kaizeninfotech.com" : "securitycode@kaizeninfotech.com," + emailId.Trim();
                         task2 = Task.Factory.StartNew(() => sendMail(email, OTP, memberName, user.mobileNo, clubName));
                     }
                     else
